@@ -39,7 +39,7 @@ class MyHomePage extends StatelessWidget {
         title: Center(child: Text('Expense Planner')),
       ),
       body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
@@ -47,6 +47,28 @@ class MyHomePage extends StatelessWidget {
             child: Card(
               color: Colors.lightBlue[200],
               child: Text('Chart!'),
+            ),
+          ),
+          Card(
+            elevation: 5,
+            child: Container(
+              padding: EdgeInsets.all(10),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: <Widget>[
+                  TextField(
+                    decoration: InputDecoration(labelText: 'Title'),
+                  ),
+                  TextField(
+                    decoration: InputDecoration(labelText: 'Amonut'),
+                  ),
+                  FlatButton(
+                    onPressed: () {},
+                    textColor: Colors.purple,
+                    child: Text('Add Transaction'),
+                  )
+                ],
+              ),
             ),
           ),
           Column(
