@@ -25,19 +25,21 @@ class MyHomePage extends StatelessWidget {
       appBar: AppBar(
         title: Center(child: Text('Expense Planner')),
       ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Container(
-            width: double.infinity,
-            child: Card(
-              color: Colors.lightBlue[200],
-              child: Text('Chart!'),
+      body: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Container(
+              width: double.infinity,
+              child: Card(
+                color: Colors.lightBlue[200],
+                child: Text('Chart!'),
+              ),
             ),
-          ),
-          UserTransaction(),
-        ],
+            UserTransaction(),
+          ],
+        ),
       ),
     );
   }
