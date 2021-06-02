@@ -20,15 +20,20 @@ class NewTransaction extends StatelessWidget {
             TextField(
               decoration: InputDecoration(labelText: 'Title'),
               controller: titleController,
+              keyboardType: TextInputType.text,
+              onSubmitted: (_) =>
+                  submitData(), // in the onSUbmitted method, it provides a parameters that have value of input, we use (_) just to receive and get rid of message of flutter(we won´t use this value) ((_)this underline means that i will receive the parameter but won´t use it-i don´t care about it´s value)
             ),
             TextField(
               decoration: InputDecoration(labelText: 'Amonut'),
               controller: amountController,
+              keyboardType: TextInputType.number,
+              onSubmitted: (_) =>
+                  submitData(), // in the onSUbmitted method, it provides a parameters that have value of input, we use (_) just to receive and get rid of message of flutter(we won´t use this value) ((_)this underline means that i will receive the parameter but won´t use it-i don´t care about it´s value)
             ),
             FlatButton(
               onPressed: () {
-                addNewTx(
-                    titleController.text, double.parse(amountController.text));
+                submitData();
               },
               textColor: Colors.purple,
               child: Text('Add Transaction'),
@@ -37,5 +42,15 @@ class NewTransaction extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void submitData() {
+    final enteredTitle = titleController.text;
+    final enteredAmount = amountController.text;
+    if (enteredTitle.isEmpty || enteredAmount.isEmpty) {
+      return;
+    }
+
+    addNewTx(titleController.text, double.parse(amountController.text));
   }
 }
