@@ -57,5 +57,7 @@ class _NewTransactionState extends State<NewTransaction> {
     }
 
     widget.addNewTx(titleController.text, double.parse(amountController.text));
+
+    Navigator.of(context).pop();
   }
 }
