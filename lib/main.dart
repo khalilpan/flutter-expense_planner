@@ -16,6 +16,7 @@ class MyApp extends StatelessWidget {
       title: "Expense Planner",
       home: MyHomePage(),
       theme: ThemeData(
+        errorColor: Colors.red,
         primarySwatch: Colors.purple,
         accentColor: Colors.blue,
         fontFamily: 'QuickSand',
@@ -54,16 +55,25 @@ class _MyAppState extends State<MyHomePage> {
     }).toList();
   }
 
-  void _addNewTransaction(String txTitle, double txAmount) {
+  void _addNewTransaction(
+      String txTitle, double txAmount, DateTime chosenDate) {
     final newTx = Transaction(
       title: txTitle,
       amount: txAmount,
-      date: DateTime.now(),
+      date: chosenDate,
       id: DateTime.now().toString(),
     );
 
     setState(() {
       userTransactions.add(newTx);
+    });
+  }
+
+  void _deleteTransaction(String idReceived) {
+    setState(() {
+      userTransactions.removeWhere(
+        (item) => item.id == idReceived,
+      );
     });
   }
 
@@ -104,7 +114,9 @@ class _MyAppState extends State<MyHomePage> {
                 child: Chart(_recentTransactions),
               ),
             ),
-            TransactionList(userTransactions: userTransactions),
+            TransactionList(
+                userTransactions: userTransactions,
+                deleteTransaction: _deleteTransaction),
           ],
         ),
       ),

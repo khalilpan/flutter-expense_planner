@@ -5,8 +5,10 @@ import '../models/transaction.dart';
 
 class TransactionList extends StatelessWidget {
   final List<Transaction> userTransactions;
+  final Function deleteTransaction;
 
-  TransactionList({required this.userTransactions});
+  TransactionList(
+      {required this.userTransactions, required this.deleteTransaction});
 
 //solution with ListView.builder
   @override
@@ -64,13 +66,21 @@ class TransactionList extends StatelessWidget {
                         color: Colors.grey,
                       ),
                     ),
-                    trailing: OutlinedButton(
-                      onPressed: () {},
-                      child: const Text(
-                        'Delete',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
+
+                    trailing: IconButton(
+                      onPressed: () =>
+                          deleteTransaction(userTransactions[index].id),
+                      icon: Icon(Icons.delete),
+                      color: Theme.of(context).errorColor,
                     ),
+
+                    // trailing: OutlinedButton(
+                    //   onPressed: () {},
+                    //   child: const Text(
+                    //     'Delete',
+                    //     style: TextStyle(fontWeight: FontWeight.bold),
+                    //   ),
+                    // ),
                   ),
                 );
                 //solution with Card widget
