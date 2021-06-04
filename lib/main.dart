@@ -106,32 +106,44 @@ class _MyAppState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Center(
-          child: Text('Expense Planner'),
-        ),
-        actions: <Widget>[
-          IconButton(
-            onPressed: () => _showAddNewTxSheet(context),
-            icon: Icon(Icons.add),
-          ),
-        ],
+    final appBar = AppBar(
+      title: Center(
+        child: Text('Expense Planner'),
       ),
+      actions: <Widget>[
+        IconButton(
+          onPressed: () => _showAddNewTxSheet(context),
+          icon: Icon(Icons.add),
+        ),
+      ],
+    );
+
+    return Scaffold(
+      appBar: appBar,
       body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Container(
-              width: double.infinity,
+              height: (MediaQuery.of(context).size.height -
+                      appBar.preferredSize.height -
+                      MediaQuery.of(context).padding.top) *
+                  0.4,
+              // width: double.infinity,
               child: Card(
                 child: Chart(_recentTransactions),
               ),
             ),
-            TransactionList(
-                userTransactions: userTransactions,
-                deleteTransaction: _deleteTransaction),
+            Container(
+              height: (MediaQuery.of(context).size.height -
+                      appBar.preferredSize.height -
+                      MediaQuery.of(context).padding.top) *
+                  0.6,
+              child: TransactionList(
+                  userTransactions: userTransactions,
+                  deleteTransaction: _deleteTransaction),
+            ),
           ],
         ),
       ),
