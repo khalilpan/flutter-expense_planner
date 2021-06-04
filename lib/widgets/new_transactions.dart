@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class NewTransaction extends StatefulWidget {
   final Function addNewTx;
@@ -10,8 +11,10 @@ class NewTransaction extends StatefulWidget {
 }
 
 class _NewTransactionState extends State<NewTransaction> {
-  final titleController = TextEditingController();
-  final amountController = TextEditingController();
+  final _titleController = TextEditingController();
+  final _amountController = TextEditingController();
+
+  var _selectedDate = null;
 
   @override
   Widget build(BuildContext context) {
@@ -24,24 +27,55 @@ class _NewTransactionState extends State<NewTransaction> {
           children: <Widget>[
             TextField(
               decoration: InputDecoration(labelText: 'Title'),
-              controller: titleController,
+              controller: _titleController,
               keyboardType: TextInputType.text,
               onSubmitted: (_) =>
-                  submitData(), // in the onSUbmitted method, it provides a parameters that have value of input, we use (_) just to receive and get rid of message of flutter(we won´t use this value) ((_)this underline means that i will receive the parameter but won´t use it-i don´t care about it´s value)
+                  _submitData(), // in the onSUbmitted method, it provides a parameters that have value of input, we use (_) just to receive and get rid of message of flutter(we won´t use this value) ((_)this underline means that i will receive the parameter but won´t use it-i don´t care about it´s value)
             ),
             TextField(
               decoration: InputDecoration(labelText: 'Amonut'),
-              controller: amountController,
+              controller: _amountController,
               keyboardType: TextInputType.number,
               onSubmitted: (_) =>
-                  submitData(), // in the onSUbmitted method, it provides a parameters that have value of input, we use (_) just to receive and get rid of message of flutter(we won´t use this value) ((_)this underline means that i will receive the parameter but won´t use it-i don´t care about it´s value)
+                  _submitData(), // in the onSUbmitted method, it provides a parameters that have value of input, we use (_) just to receive and get rid of message of flutter(we won´t use this value) ((_)this underline means that i will receive the parameter but won´t use it-i don´t care about it´s value)
             ),
-            FlatButton(
+            Container(
+              height: 80,
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      _selectedDate == null
+                          ? 'No Date Chosen!'
+                          : 'Picked date : ${DateFormat.yMd().format(_selectedDate)}',
+                    ),
+                  ),
+                  FlatButton(
+                    onPressed: () {
+                      _presentDatePicker();
+                    },
+                    textColor: Theme.of(context).primaryColor,
+                    child: Text(
+                      'Choose date',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            OutlinedButton(
               onPressed: () {
-                submitData();
+                _submitData();
               },
-              textColor: Colors.purple,
-              child: Text('Add Transaction'),
+              // textColor: Theme.of(context).primaryColor,
+              child: Text(
+                'Add Transaction',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             )
           ],
         ),
@@ -49,15 +83,32 @@ class _NewTransactionState extends State<NewTransaction> {
     );
   }
 
-  void submitData() {
-    final enteredTitle = titleController.text;
-    final enteredAmount = amountController.text;
+  void _submitData() {
+    final enteredTitle = _titleController.text;
+    final enteredAmount = _amountController.text;
     if (enteredTitle.isEmpty || enteredAmount.isEmpty) {
       return;
     }
 
-    widget.addNewTx(titleController.text, double.parse(amountController.text));
+    widget.addNewTx(
+        _titleController.text, double.parse(_amountController.text));
 
     Navigator.of(context).pop();
+  }
+
+  void _presentDatePicker() {
+    showDatePicker(
+            context: context,
+            initialDate: DateTime.now(),
+            firstDate: DateTime(DateTime.now().year),
+            lastDate: DateTime.now())
+        .then((pickedDate) {
+      if (pickedDate == null) {
+        return;
+      }
+      setState(() {
+        _selectedDate = pickedDate;
+      });
+    });
   }
 }

@@ -1,5 +1,3 @@
-import 'dart:html';
-
 import 'package:expense_planner/models/transaction.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -68,7 +66,10 @@ class TransactionList extends StatelessWidget {
                     ),
                     trailing: OutlinedButton(
                       onPressed: () {},
-                      child: const Text('Delete'),
+                      child: const Text(
+                        'Delete',
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
                     ),
                   ),
                 );
