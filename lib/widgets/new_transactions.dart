@@ -65,16 +65,12 @@ class _NewTransactionState extends State<NewTransaction> {
                 ],
               ),
             ),
-            OutlinedButton(
-              onPressed: () {
-                _submitData();
-              },
-              // textColor: Theme.of(context).primaryColor,
+            RaisedButton(
+              onPressed: _submitData,
+              textColor: Theme.of(context).textTheme.button!.color,
+              color: Theme.of(context).primaryColor,
               child: Text(
                 'Add Transaction',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                ),
               ),
             )
           ],
