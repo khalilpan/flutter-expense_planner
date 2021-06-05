@@ -52,8 +52,29 @@ class MyHomePage extends StatefulWidget {
   _MyAppState createState() => _MyAppState();
 }
 
-class _MyAppState extends State<MyHomePage> {
+class _MyAppState extends State<MyHomePage> with WidgetsBindingObserver {
   bool _showChart = false;
+
+  //with this line we say for app: whenever my lifecycle state changes, go to certain observer and call the "didChangeAppLifecycleState" method
+  @override
+  void initState() {
+    WidgetsBinding.instance!.addObserver(this);
+    super.initState();
+  }
+
+//here we can access every kind of app lifecycle states
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    print(state);
+    super.didChangeAppLifecycleState(state);
+  }
+
+//to clean lifecycle observer(listeners)
+  @override
+  void dispose() {
+    WidgetsBinding.instance!.removeObserver(this);
+    super.dispose();
+  }
 
   final List<Transaction> userTransactions = [
     Transaction(
@@ -132,7 +153,7 @@ class _MyAppState extends State<MyHomePage> {
     );
 
 //just a variable
-    final txListWidgetPortrait = Container(
+    final _txListWidgetPortrait = Container(
       height: (mediaQuery.size.height -
               appBar.preferredSize.height -
               mediaQuery.padding.top) *
@@ -165,7 +186,7 @@ class _MyAppState extends State<MyHomePage> {
     );
 
 //just a variable
-    final portraitChart = Container(
+    final _portraitChart = Container(
       height: (mediaQuery.size.height -
               appBar.preferredSize.height -
               mediaQuery.padding.top) *
@@ -175,6 +196,23 @@ class _MyAppState extends State<MyHomePage> {
       ),
     );
 
+//just a variable
+    Widget _buildLandscapeContent() {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text('Show Chart'),
+          Switch(
+              value: _showChart,
+              onChanged: (val) {
+                setState(() {
+                  _showChart = val;
+                });
+              })
+        ],
+      );
+    }
+
     return Scaffold(
       appBar: appBar,
       body: SingleChildScrollView(
@@ -182,22 +220,9 @@ class _MyAppState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            if (isLandscape)
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text('Show Chart'),
-                  Switch(
-                      value: _showChart,
-                      onChanged: (val) {
-                        setState(() {
-                          _showChart = val;
-                        });
-                      })
-                ],
-              ),
-            if (!isLandscape) portraitChart,
-            if (!isLandscape) txListWidgetPortrait,
+            if (isLandscape) _buildLandscapeContent(),
+            if (!isLandscape) _portraitChart,
+            if (!isLandscape) _txListWidgetPortrait,
             _showChart ? landscapeChart : txListWidgetLandscape,
           ],
         ),

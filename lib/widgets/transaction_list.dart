@@ -1,6 +1,6 @@
 import 'package:expense_planner/models/transaction.dart';
+import 'package:expense_planner/widgets/transaction_item.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import '../models/transaction.dart';
 
 class TransactionList extends StatelessWidget {
@@ -39,60 +39,9 @@ class TransactionList extends StatelessWidget {
           )
         : ListView.builder(
             itemBuilder: (contex, index) {
-              return Card(
-                elevation: 5,
-                margin: EdgeInsets.symmetric(
-                  vertical: 8,
-                  horizontal: 5,
-                ),
-                child: ListTile(
-                  leading: CircleAvatar(
-                    radius: 30,
-                    child: Padding(
-                      padding: EdgeInsets.all(5),
-                      child: FittedBox(
-                        child: Text(
-                            'R\$${userTransactions[index].amount.toStringAsFixed(2)}'),
-                      ),
-                    ),
-                  ),
-                  title: Text(
-                    userTransactions[index].title,
-                    style: Theme.of(context).textTheme.title,
-                  ),
-                  subtitle: Text(
-                    DateFormat()
-                        .add_yMMMEd()
-                        .format(userTransactions[index].date),
-                    style: TextStyle(
-                      color: Colors.grey,
-                    ),
-                  ),
-
-                  trailing: MediaQuery.of(context).size.width > 400
-                      ? FlatButton.icon(
-                          onPressed: () =>
-                              deleteTransaction(userTransactions[index].id),
-                          icon: Icon(Icons.delete),
-                          textColor: Theme.of(context).errorColor,
-                          label: Text('Delete'),
-                        )
-                      : IconButton(
-                          onPressed: () =>
-                              deleteTransaction(userTransactions[index].id),
-                          icon: Icon(Icons.delete),
-                          color: Theme.of(context).errorColor,
-                        ),
-
-                  // trailing: OutlinedButton(
-                  //   onPressed: () {},
-                  //   child: const Text(
-                  //     'Delete',
-                  //     style: TextStyle(fontWeight: FontWeight.bold),
-                  //   ),
-                  // ),
-                ),
-              );
+              return TransactionItem(
+                  userTransaction: userTransactions[index],
+                  deleteTransaction: deleteTransaction);
               //solution with Card widget
               // return Card(
               //   child: Row(
