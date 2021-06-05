@@ -69,7 +69,7 @@ class TransactionList extends StatelessWidget {
                     ),
                   ),
 
-                  trailing: MediaQuery.of(context).size.width > 420
+                  trailing: MediaQuery.of(context).size.width > 400
                       ? FlatButton.icon(
                           onPressed: () =>
                               deleteTransaction(userTransactions[index].id),
