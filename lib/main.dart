@@ -2,16 +2,16 @@ import 'package:expense_planner/widgets/chart.dart';
 import 'package:expense_planner/widgets/new_transactions.dart';
 import 'package:expense_planner/widgets/transaction_list.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 import 'models/transaction.dart';
 
 void main() {
-  WidgetsFlutterBinding.ensureInitialized();
-  SystemChrome.setPreferredOrientations([
-    DeviceOrientation.portraitUp,
-    DeviceOrientation.portraitDown,
-  ]);
+  //to enable just portrait mode in app
+  // WidgetsFlutterBinding.ensureInitialized();
+  // SystemChrome.setPreferredOrientations([
+  //   DeviceOrientation.portraitUp,
+  //   DeviceOrientation.portraitDown,
+  // ]);
   runApp(MyApp());
 }
 
@@ -53,6 +53,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyHomePage> {
+  bool _showChart = false;
+
   final List<Transaction> userTransactions = [
     Transaction(
       id: 't1',
@@ -112,6 +114,10 @@ class _MyAppState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final isLandscape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
+
+//just a variable
     final appBar = AppBar(
       title: Center(
         child: Text('Expense Planner'),
@@ -124,6 +130,50 @@ class _MyAppState extends State<MyHomePage> {
       ],
     );
 
+//just a variable
+    final txListWidgetPortrait = Container(
+      height: (MediaQuery.of(context).size.height -
+              appBar.preferredSize.height -
+              MediaQuery.of(context).padding.top) *
+          0.6,
+      child: TransactionList(
+          userTransactions: userTransactions,
+          deleteTransaction: _deleteTransaction),
+    );
+
+    //just a variable
+    final txListWidgetLandscape = Container(
+      height: (MediaQuery.of(context).size.height -
+              appBar.preferredSize.height -
+              MediaQuery.of(context).padding.top) *
+          0.8,
+      child: TransactionList(
+          userTransactions: userTransactions,
+          deleteTransaction: _deleteTransaction),
+    );
+
+//just a variable
+    final landscapeChart = Container(
+      height: (MediaQuery.of(context).size.height -
+              appBar.preferredSize.height -
+              MediaQuery.of(context).padding.top) *
+          0.8,
+      child: Card(
+        child: Chart(_recentTransactions),
+      ),
+    );
+
+//just a variable
+    final portraitChart = Container(
+      height: (MediaQuery.of(context).size.height -
+              appBar.preferredSize.height -
+              MediaQuery.of(context).padding.top) *
+          0.4,
+      child: Card(
+        child: Chart(_recentTransactions),
+      ),
+    );
+
     return Scaffold(
       appBar: appBar,
       body: SingleChildScrollView(
@@ -131,25 +181,23 @@ class _MyAppState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Container(
-              height: (MediaQuery.of(context).size.height -
-                      appBar.preferredSize.height -
-                      MediaQuery.of(context).padding.top) *
-                  0.4,
-              // width: double.infinity,
-              child: Card(
-                child: Chart(_recentTransactions),
+            if (isLandscape)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text('Show Chart'),
+                  Switch(
+                      value: _showChart,
+                      onChanged: (val) {
+                        setState(() {
+                          _showChart = val;
+                        });
+                      })
+                ],
               ),
-            ),
-            Container(
-              height: (MediaQuery.of(context).size.height -
-                      appBar.preferredSize.height -
-                      MediaQuery.of(context).padding.top) *
-                  0.6,
-              child: TransactionList(
-                  userTransactions: userTransactions,
-                  deleteTransaction: _deleteTransaction),
-            ),
+            if (!isLandscape) portraitChart,
+            if (!isLandscape) txListWidgetPortrait,
+            _showChart ? landscapeChart : txListWidgetLandscape,
           ],
         ),
       ),
