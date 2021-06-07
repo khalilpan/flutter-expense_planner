@@ -2,6 +2,23 @@
 
 A new Flutter project.
 
+**Home Screen** :
+
+![Home Screen](https://user-images.githubusercontent.com/40691961/121063309-87acb380-c79c-11eb-813a-fda2ecc579ed.png)
+
+
+
+**Add new Item** :
+
+![Add new Item](https://user-images.githubusercontent.com/40691961/121063342-909d8500-c79c-11eb-9a48-121d078a68f8.png)
+
+
+
+**Date Input**:
+
+![Input date](https://user-images.githubusercontent.com/40691961/121063380-9abf8380-c79c-11eb-9532-6f5008c59190.png)
+
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.
